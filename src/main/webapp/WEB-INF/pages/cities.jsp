@@ -29,6 +29,28 @@
         </tr>
     </c:forEach>
 </table>
+<%--
+<table>
+    <tr>
+        <th>id</th>
+        <th>from</th>
+        <th>to</th>
+        <th>distance</th>
+    </tr>
+    <c:forEach var="distance" items="${citiesList}">
+        <tr>
+            <td>${city.id}</td>
+            <td>${city.name}</td>
+            <td>${city.latitude}</td>
+            <td>${city.longitude}</td>
+            <td>
+                <a href="/edit/${city.id}">edit</a>
+                <a href="/delete/${city.id}">delete</a>
+            </td>
+        </tr>
+    </c:forEach>
+</table>
+--%>
 
 <h2>Add</h2>
 <c:url value="/add" var="add"/>

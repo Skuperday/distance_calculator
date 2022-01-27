@@ -1,7 +1,6 @@
 package calculator.dao;
 
 import calculator.model.City;
-
 import java.util.List;
 
 public interface CityDAO {

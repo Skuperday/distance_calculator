@@ -3,6 +3,7 @@ package calculator.controller;
 import calculator.model.City;
 import calculator.service.CityService;
 import calculator.service.CityServiceImpl;
+import calculator.service.DistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,12 @@ import java.util.List;
 public class CalcController {
 
     private CityService cityService;
+    private DistanceService distanceService;
+
+    @Autowired
+    public void setDistanceService(DistanceService distanceService){
+        this.distanceService = distanceService;
+    }
 
     @Autowired
     public void setCityService(CityService cityService){

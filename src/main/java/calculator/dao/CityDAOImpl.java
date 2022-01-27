@@ -12,14 +12,6 @@ public class CityDAOImpl implements  CityDAO{
     private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
     private static Map<Integer, City> cities = new HashMap<>();
 
-    static {
-        City city1 = new City(0,0,"");
-        city1.setLongitude(55.1122);
-        city1.setLatitude(55.3212);
-        city1.setName("Moscow");
-        city1.setId(AUTO_ID.getAndIncrement());
-        cities.put(city1.getId(), city1);
-    }
 
     @Override
     public List<City> allCity() {
