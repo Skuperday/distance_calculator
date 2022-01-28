@@ -5,6 +5,8 @@ import calculator.service.CityService;
 import calculator.service.CityServiceImpl;
 import calculator.service.DistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,6 @@ public class CalcController {
     public void setDistanceService(DistanceService distanceService){
         this.distanceService = distanceService;
     }
-
     @Autowired
     public void setCityService(CityService cityService){
         this.cityService = cityService;
@@ -48,7 +49,7 @@ public class CalcController {
         modelAndView.setViewName("redirect:/");
         cityService.add(city);
         return modelAndView;
-    }
+   }
     @GetMapping(value = "/edit/{id}")
     public ModelAndView editPage(@PathVariable int id){
         City city = cityService.getById(id);
@@ -72,5 +73,17 @@ public class CalcController {
         cityService.delete(city);
         return modelAndView;
     }
-
+    //GET POST PUT DELETE implementation
+    @GetMapping(value = "/cities")
+    public ResponseEntity<List<City>> read(){
+        List<City> cities = cityService.allCity();
+        return  cities != null && !cities.isEmpty()
+                ? new ResponseEntity<>(cities, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+//    @PostMapping(value = "/add")
+//    public ResponseEntity<?> add(@RequestBody City city){
+//        cityService.add(city);
+//        return new ResponseEntity<>(HttpStatus.CREATED);
+//    }
 }

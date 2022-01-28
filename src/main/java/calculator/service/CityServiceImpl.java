@@ -5,6 +5,8 @@ import calculator.dao.CityDAOImpl;
 import calculator.model.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -18,26 +20,31 @@ public class CityServiceImpl implements CityService{
     }
 
     @Override
+    @Transactional
     public List<City> allCity() {
         return cityDAO.allCity();
     }
 
     @Override
+    @Transactional
     public void add(City city) {
         cityDAO.add(city);
     }
 
     @Override
+    @Transactional
     public void delete(City city) {
         cityDAO.delete(city);
     }
 
     @Override
+    @Transactional
     public void edit(City city) {
         cityDAO.edit(city);
     }
 
     @Override
+    @Transactional
     public City getById(int id) {
         return cityDAO.getById(id);
     }

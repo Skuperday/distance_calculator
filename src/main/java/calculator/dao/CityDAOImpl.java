@@ -1,41 +1,50 @@
 package calculator.dao;
 
 import calculator.model.City;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public class CityDAOImpl implements  CityDAO{
-    private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
-    private static Map<Integer, City> cities = new HashMap<>();
+    private SessionFactory sessionFactory;
 
-
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
     @Override
-    public List<City> allCity() {
-        return new ArrayList<>(cities.values());
+    @SuppressWarnings("unchecked")
+    public List<City> allCity(){
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from City").list();
     }
 
     @Override
     public void add(City city) {
-        city.setId(AUTO_ID.getAndIncrement());
-        cities.put(city.getId(), city);
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(city);
     }
 
     @Override
     public void delete(City city) {
-        cities.remove(city.getId());
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(city);
     }
 
     @Override
     public void edit(City city) {
-        cities.put(city.getId(), city);
+        Session session = sessionFactory.getCurrentSession();
+        session.update(city);
     }
 
     @Override
     public City getById(int id) {
-        return cities.get(id);
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(City.class, id);
     }
 }
