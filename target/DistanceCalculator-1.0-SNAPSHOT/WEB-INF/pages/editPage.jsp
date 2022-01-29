@@ -27,13 +27,14 @@
     <input type="text" name="latitude" id="latitude">
     <label for="longitude">Longitude</label>
     <input type="text" name="longitude" id="longitude">
-
     <c:if test="${empty city.name}">
         <input type="submit" value="Add new city">
     </c:if>
     <c:if test="${!empty city.name}">
         <input type="submit" value="Edit city">
     </c:if>
+    <%= request.getAttribute("error")%>
+
 </form>
 </body>
 </html>

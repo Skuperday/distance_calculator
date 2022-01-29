@@ -12,8 +12,20 @@ import org.springframework.http.converter.json.GsonBuilderUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import calculator.exception.*;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 
 @Controller
@@ -82,8 +94,13 @@ public class CalcController {
                     .findAny()
                     .orElse(null);
             if (distanceTo == null){
-                modelAndView.setViewName("calculate");
-                modelAndView.addObject("result", notFound);
+                try{
+                    throw new NITException();
+                } catch (NITException e){
+                    modelAndView.setViewName("calculate");
+                    modelAndView.addObject("result", e.toString());
+                    return modelAndView;
+                }
             }
             String result = String.format("%9.2f km", distanceTo.getDistance());
             modelAndView.addObject("result", result);
@@ -97,12 +114,22 @@ public class CalcController {
     @GetMapping(value = "/add")
     public ModelAndView addPage() {
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error", "");
         modelAndView.setViewName("editPage");
         return modelAndView;
     }
     @PostMapping(value = "/add")
-    public ModelAndView addCity(@ModelAttribute City city) {
+    public ModelAndView addCity(@ModelAttribute City city) throws CoordinatesException{
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("error", "");
+        try {
+            city.setLatitude(city.getLatitude());
+            city.setLongitude(city.getLongitude());
+        } catch (CoordinatesException e){
+            modelAndView.setViewName("editPage");
+            modelAndView.addObject("error", e.toString());
+            return modelAndView;
+        }
         modelAndView.setViewName("redirect:/");
         cityService.add(city);
         return modelAndView;
@@ -112,6 +139,7 @@ public class CalcController {
         City city = cityService.getById(id);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("editPage");
+        modelAndView.addObject("error", "");
         modelAndView.addObject("city", cityService.getById(id));
         return modelAndView;
     }
@@ -119,6 +147,14 @@ public class CalcController {
     public ModelAndView editCity(@ModelAttribute City city) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/");
+        if (city.getLatitude() == 0 || city.getLongitude() == 0){
+            try{
+                throw new CoordinatesException();
+            } catch (CoordinatesException e) {
+                modelAndView.addObject("error", e.toString());
+                return modelAndView;
+            }
+        }
         cityService.edit(city);
         return modelAndView;
     }
@@ -130,4 +166,42 @@ public class CalcController {
         cityService.delete(city);
         return modelAndView;
     }
+    @GetMapping(value = "/addxml")
+    public ModelAndView upload(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/addxml");
+        return modelAndView;
+    }
+    @PostMapping(value = "/uploadCities")
+    public ModelAndView uploadCities(@RequestParam("file")MultipartFile multipartFile){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/");
+        try {
+            File file = new File( multipartFile.getOriginalFilename() );
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(multipartFile.getBytes());
+            fos.close();
+            try {
+                JAXBContext context = JAXBContext.newInstance(City.class);
+                Unmarshaller um = context.createUnmarshaller();
+                List<City> citiesList = (List<City>) um.unmarshal(file);
+                citiesList.forEach((city) -> cityService.add(city));
+            } catch (JAXBException e){
+                e.printStackTrace();
+                return modelAndView;
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+            return modelAndView;
+        }
+        return modelAndView;
+    }
+    @PostMapping(value = "/uploadDistances")
+    public ModelAndView uploadDistances(@RequestParam("file")MultipartFile file){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/");
+
+        return modelAndView;
+    }
+
 }

@@ -30,6 +30,7 @@
     </c:forEach>
 </table>
 <a href="/calculator">distance calculator</a>
-
+<a href="/add">Add new city</a>
+<a href="/addxml">Add your file</a>
 </body>
 </html>

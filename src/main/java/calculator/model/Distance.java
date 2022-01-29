@@ -2,6 +2,7 @@ package calculator.model;
 
 import org.hibernate.annotations.Generated;
 import javax.persistence.*;
+import calculator.exception.*;
 
 @Entity
 @Table(name = "distance_matrix")
