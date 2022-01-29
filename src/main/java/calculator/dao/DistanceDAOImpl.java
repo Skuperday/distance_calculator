@@ -1,44 +1,51 @@
 package calculator.dao;
 
-import calculator.model.City;
 import calculator.model.Distance;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 @Repository
 public class DistanceDAOImpl implements DistanceDAO{
 
-    private static final AtomicInteger AUTO_ID = new AtomicInteger(0);
-    private static Map<Integer, Distance> distances = new HashMap<>();
+    private SessionFactory sessionFactory;
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Distance> allDistance() {
-        return new ArrayList<>(distances.values());
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from Distance").list();
     }
 
     @Override
     public void add(Distance distance) {
-        distance.setId(AUTO_ID.getAndIncrement());
-        distances.put(distance.getId(), distance);
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(distance);
     }
 
     @Override
     public void delete(Distance distance) {
-        distances.remove(distance.getId());
+        Session session = sessionFactory.getCurrentSession();
+        session.delete(distance);
     }
 
     @Override
     public void edit(Distance distance) {
-        distances.put(distance.getId(), distance);
+        Session session = sessionFactory.getCurrentSession();
+        session.update(distance);
     }
 
     @Override
     public Distance getById(int id) {
-        return distances.get(id);
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Distance.class, id);
     }
 }

@@ -1,7 +1,6 @@
 package calculator.model;
 
 import org.hibernate.annotations.Generated;
-
 import javax.persistence.*;
 
 @Entity
@@ -11,10 +10,8 @@ public class City {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @Column(name = "longitude")
     private double longitude;
-
     @Column(name = "latitude")
     private double latitude;
     @Column(name = "name")
@@ -23,21 +20,17 @@ public class City {
 
     public City() {
     }
-
+    public void setId(int id){
+        this.id = id;
+    }
     public void setLongitude(double longitude){
         this.longitude = longitude;
     }
-
     public void setLatitude(double latitude){
         this.latitude = latitude;
     }
-
     public void setName(String name){
         this.name = name;
-    }
-
-    public void setId(int id){
-        this.id = id;
     }
 
     public double getLongitude() {

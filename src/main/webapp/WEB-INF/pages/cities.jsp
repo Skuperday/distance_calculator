@@ -29,8 +29,7 @@
         </tr>
     </c:forEach>
 </table>
-<h2>Add</h2>
-<c:url value="/add" var="add"/>
-<a href="${add}">Add new city</a>
+<a href="/calculator">distance calculator</a>
+
 </body>
 </html>

@@ -23,10 +23,11 @@
     </c:if>
     <label for="name">Name</label>
     <input type="text" name="name" id="name">
-    <label for="longitude">Longitude</label>
-    <input type="text" name="longitude" id="longitude">
     <label for="latitude">Latitude</label>
     <input type="text" name="latitude" id="latitude">
+    <label for="longitude">Longitude</label>
+    <input type="text" name="longitude" id="longitude">
+
     <c:if test="${empty city.name}">
         <input type="submit" value="Add new city">
     </c:if>

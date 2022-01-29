@@ -1,6 +1,6 @@
 package calculator.service;
 
-import calculator.model.City;
+
 import calculator.model.Distance;
 import java.util.List;
 
