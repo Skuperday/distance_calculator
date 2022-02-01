@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.GsonBuilderUtils;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
+import calculator.DOMParser.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,11 +23,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import calculator.exception.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
 
 @Controller
 public class CalcController {
@@ -172,36 +173,29 @@ public class CalcController {
         modelAndView.setViewName("/addxml");
         return modelAndView;
     }
-    @PostMapping(value = "/uploadCities")
-    public ModelAndView uploadCities(@RequestParam("file")MultipartFile multipartFile){
+    @PostMapping(value = "/addxml")
+    public ModelAndView upload(@RequestParam("file")MultipartFile multipartFile,
+                                @RequestParam("name")String name){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
+
         try {
-            File file = new File( multipartFile.getOriginalFilename() );
-            FileOutputStream fos = new FileOutputStream(file);
-            fos.write(multipartFile.getBytes());
-            fos.close();
-            try {
-                JAXBContext context = JAXBContext.newInstance(City.class);
-                Unmarshaller um = context.createUnmarshaller();
-                List<City> citiesList = (List<City>) um.unmarshal(file);
-                citiesList.forEach((city) -> cityService.add(city));
-            } catch (JAXBException e){
+            File file = new File(name);
+            MultipartFile multiTransfer = new MockMultipartFile(multipartFile.getOriginalFilename(),multipartFile.getBytes());
+            multiTransfer.transferTo(file);
+            DOMParser domParser = new DOMParser();
+            domParser.domParse(file);
+            if (!domParser.getCities().isEmpty()){
+                domParser.getCities().forEach((city) -> cityService.add(city));
+            }
+            if (!domParser.getDistances().isEmpty()){
+                domParser.getDistances().forEach((distance) -> distanceService.add(distance));
+            }
+        }
+             catch (Exception e) {
                 e.printStackTrace();
                 return modelAndView;
             }
-        } catch (IOException e){
-            e.printStackTrace();
-            return modelAndView;
-        }
-        return modelAndView;
-    }
-    @PostMapping(value = "/uploadDistances")
-    public ModelAndView uploadDistances(@RequestParam("file")MultipartFile file){
-        ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/");
-
         return modelAndView;
     }
-
 }

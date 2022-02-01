@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+
+    <changeSet id="0" author="Skuperday">
+        <createTable tableName="cities">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar (100)"/>
+            <column name="latitude" type="double"/>
+            <column name="longitude" type="double"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1" author="Skuperday">
+        <createTable tableName="distance_matrix">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="fromCity" type="varchar (100)"/>
+            <column name="toCity" type="varchar (100)"/>
+            <column name="distance" type="double"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

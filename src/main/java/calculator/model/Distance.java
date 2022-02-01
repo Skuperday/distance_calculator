@@ -21,6 +21,11 @@ public class Distance{
 
     public Distance(){
     }
+    public Distance(String fromCity, String toCity, double distance){
+        this.fromCity = fromCity;
+        this.toCity = toCity;
+        this.distance = distance;
+    }
     public void setId(int id){
         this.id = id;
     }

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class Main {
     public static void main(String[] args) {
+        //just for connection test
         String url ="jdbc:mysql://localhost:3306/distance_calculator";
         String username = "root";
         String password = "root";

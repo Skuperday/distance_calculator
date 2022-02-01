@@ -5,13 +5,10 @@
     <title>UPLOAD</title>
 </head>
 <body>
-<form method="POST" enctype="multipart/form-data" action="/uploadDistance">
-    Upload distances file here <input type="file" name="file">
-    <input type="submit" value="Upload">
-</form>
-<form method="POST" enctype="multipart/form-data" action="/uploadCities">
-    Upload cities file here <input type="file" name="file">
-    <input type="submit" value="Upload">
+<form method="POST" enctype="multipart/form-data" action="/addxml">
+    Upload  <input type="file" name="file">
+    Name    <input type="text" name="name">
+            <input type="submit" value="upload">
 </form>
 <a href="/">Back to cities list</a>
 </body>

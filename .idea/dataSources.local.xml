@@ -13,8 +13,6 @@
         <introspection-scope>
           <node kind="schema">
             <name qname="@" />
-            <name qname="test" />
-            <name qname="information_schema" />
             <name qname="distance_calculator" />
           </node>
         </introspection-scope>

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -18,43 +19,49 @@ import java.io.IOException;
 
 @Entity
 @Table(name = "cities")
-@XmlRootElement
 public class City {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @XmlElement(name = "longitude")
     @Column(name = "longitude")
     private double longitude;
-    @XmlElement(name = "latitude")
     @Column(name = "latitude")
     private double latitude;
-    @XmlElement(name = "name")
     @Column(name = "name")
     private String name;
 
 
     public City() {
     }
+    public City(String name, double latitude, double longitude){
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
     public void setId(int id){
         this.id = id;
     }
+
     public void setLongitude(double longitude) throws CoordinatesException{
         if (longitude < -180.0 || longitude > 180.0){
             throw new CoordinatesException();
         }
         this.longitude = longitude;
     }
+
     public void setLatitude(double latitude) throws CoordinatesException{
         if (latitude < -90.0 || latitude > 90.0){
             throw new CoordinatesException();
         }
         this.latitude = latitude;
     }
+
     public void setName(String name){
         this.name = name;
     }
+
 
     public double getLongitude() {
         return longitude;

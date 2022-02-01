@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<testData>
+<cities>
+    <city name="Rome" latitude="41.9028" longitude="12.4964"/>
+    <city name="New York" latitude="40.7128" longitude="-74.0060"/>
+    <city name="Yekaterinburg" latitude="56.8431" longitude="60.6454"/>
+    <city name="Kamchatka" latitude="56.1327" longitude="159.5314"/>
+    <city name="Oslo" latitude="59.9139" longitude="10.7522"/>
+</cities>
+<distances>
+    <distance fromCity="Pskov" toCity="Perm" distance="2107"/>
+    <distance fromCity="Perm" toCity="Pskov" distance="2107"/>
+    <distance fromCity="Oslo" toCity="Osaka" distance="8343"/>
+    <distance fromCity="New York" toCity="Rome" distance="6886"/>
+    <distance fromCity="Rome" toCity="New York" distance="6886"/>
+    <distance fromCity="Osaka" toCity="Oslo" distance="8343"/>
+</distances>
+</testData>
